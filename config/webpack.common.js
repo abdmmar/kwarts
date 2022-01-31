@@ -2,6 +2,7 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const paths = require('./paths');
 
@@ -61,7 +62,8 @@ module.exports = {
     }),
     new ESLintPlugin({
       extensions: ['js', 'jsx', 'ts', 'tsx']
-    })
+    }),
+    new Dotenv()
   ],
   resolve: {
     modules: [paths.src, 'node_modules'],
