@@ -3,7 +3,14 @@ import Styled from 'styled-components';
 
 import Button from 'components/Button';
 
-const Root = Styled.div`
+const Main = Styled.main`
+  display: grid;
+  place-items: center;
+  width:100%;
+  height: 100%;
+`;
+
+const H = Styled.h1`
   --font-size: 1.6rem;
   --font-family: 'Roboto', sans-serif;
   --font-color: #333;
@@ -15,13 +22,10 @@ const Root = Styled.div`
 
 const App = () => {
   return (
-    <Root>
-      <header>Header</header>
-      <main>
-        <Button />
-      </main>
-      <footer>Footer</footer>
-    </Root>
+    <Main>
+      <H>Hello world!</H>
+      <Button></Button>
+    </Main>
   );
 };
 
