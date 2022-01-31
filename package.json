@@ -5,14 +5,18 @@
   "author": "Abdullah Ammar <abd.ammar.mar@gmail.com> (https://abdmmar.tech/)",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --mode production",
-    "dev": "webpack serve --mode development",
+    "build": "cross-env NODE_ENV=production webpack",
+    "dev": "cross-env NODE_ENV=development webpack serve",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "styled-components": "5.3.3"
+  },
+  "resolutions": {
+    "styled-components": "^5"
   },
   "devDependencies": {
     "@babel/core": "7.16.12",
@@ -25,10 +29,12 @@
     "@types/fork-ts-checker-webpack-plugin": "0.4.5",
     "@types/react": "17.0.38",
     "@types/react-dom": "17.0.11",
+    "@types/styled-components": "5.1.21",
     "@types/webpack-dev-server": "4.7.2",
     "@typescript-eslint/eslint-plugin": "5.10.1",
     "@typescript-eslint/parser": "5.10.1",
     "babel-loader": "8.2.3",
+    "babel-plugin-styled-components": "2.0.2",
     "clean-webpack-plugin": "4.0.0",
     "copy-webpack-plugin": "10.2.4",
     "cross-env": "7.0.3",

@@ -1,4 +1,12 @@
 {
+  "env": {
+    "development": {
+      "plugins": [["babel-plugin-styled-components", { "ssr": true, "displayName": true, "preprocess": false }]]
+    },
+    "production": {
+      "plugins": [["babel-plugin-styled-components", { "ssr": true, "displayName": false, "preprocess": false }]]
+    }
+  },
   "presets": [
     [
       "@babel/preset-env",

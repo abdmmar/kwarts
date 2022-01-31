@@ -2,7 +2,7 @@ const developmentConfig = require('./config/webpack.dev');
 const productionConfig = require('./config/webpack.prod');
 
 module.exports = (env, args) => {
-  switch (args.mode) {
+  switch (process.env.NODE_ENV) {
     case 'development':
       return developmentConfig;
     case 'production':
