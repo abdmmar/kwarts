@@ -61,7 +61,8 @@ module.exports = {
       async: false
     }),
     new ESLintPlugin({
-      extensions: ['js', 'jsx', 'ts', 'tsx']
+      extensions: ['js', 'jsx', 'ts', 'tsx'],
+      emitWarning: false
     }),
     new Dotenv()
   ],
