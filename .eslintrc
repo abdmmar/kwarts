@@ -17,6 +17,7 @@
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
+    "plugin:import/typescript",
     "problems",
     "plugin:sonarjs/recommended",
     "eslint-config-prettier"
@@ -28,13 +29,16 @@
     },
     "import/resolver": {
       "node": {
-        "extensions": [".ts", ".tsx", ".js", ".jsx"]
+        "extensions": [".ts", ".tsx", ".js", ".jsx"],
+        "moduleDirectory": ["node_modules", "src/"]
       }
     }
   },
   "rules": {
     "strict": ["error", "never"],
     "no-unused-vars": "warn",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
     // eslint-react-hooks
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",

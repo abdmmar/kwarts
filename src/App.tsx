@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Styled from 'styled-components';
 
+import Button from 'components/Button';
+
 const Root = Styled.div`
   --font-size: 1.6rem;
   --font-family: 'Roboto', sans-serif;
@@ -15,7 +17,9 @@ const App = () => {
   return (
     <Root>
       <header>Header</header>
-      <main>Main</main>
+      <main>
+        <Button />
+      </main>
       <footer>Footer</footer>
     </Root>
   );
