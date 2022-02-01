@@ -17,7 +17,7 @@ module.exports = {
     rules: [
       // Transpile TypeScript
       {
-        test: /\.(ts|js)x?$/i,
+        test: /\.(ts)x?$/i,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',

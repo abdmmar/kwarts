@@ -28,6 +28,9 @@
       "version": "detect"
     },
     "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      },
       "node": {
         "extensions": [".ts", ".tsx", ".js", ".jsx"],
         "moduleDirectory": ["node_modules", "src/"]

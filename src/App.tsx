@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Styled from 'styled-components';
 
-import Button from 'components/Button';
+import Button from '@/components/Button';
 
 const Main = Styled.main`
   display: grid;
