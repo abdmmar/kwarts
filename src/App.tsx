@@ -23,8 +23,10 @@ const H = Styled.h1`
 const App = () => {
   return (
     <Main>
-      <H>Hello world!</H>
-      <Button></Button>
+      <div>
+        <H>Hello React SSR!</H>
+        <Button></Button>
+      </div>
     </Main>
   );
 };
