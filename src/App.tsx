@@ -1,16 +1,16 @@
 import * as React from 'react';
-import Styled from 'styled-components';
+import styled from 'styled-components';
 
 import Button from '@/components/Button';
 
-const Main = Styled.main`
+const Main = styled.main`
   display: grid;
   place-items: center;
-  width:100%;
+  width: 100%;
   height: 100%;
 `;
 
-const H = Styled.h1`
+const H = styled.h1`
   --font-size: 1.6rem;
   --font-family: 'Roboto', sans-serif;
   --font-color: #333;
