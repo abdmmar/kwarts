@@ -1,7 +1,6 @@
 const path = require('path');
 const { merge } = require('webpack-merge');
 const { HotModuleReplacementPlugin } = require('webpack');
-const htmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const LoadablePlugin = require('@loadable/webpack-plugin');
@@ -24,7 +23,7 @@ module.exports = merge(common, {
     assetModuleFilename: 'assets/[hash][ext][query]',
     publicPath: '/client/'
   },
-  devtool: 'inline-cheap-module-source-map',
+  devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist',
     historyApiFallback: true,
@@ -46,12 +45,6 @@ module.exports = merge(common, {
         }
       ]
     }),
-    new htmlWebpackPlugin({
-      title: 'KWARTS',
-      favicon: paths.public + '/favicon.png',
-      template: paths.public + '/index.html',
-      filename: 'index.html'
-    }),
     new ForkTsCheckerWebpackPlugin({
       async: false
     }),
@@ -66,31 +59,6 @@ module.exports = merge(common, {
       filename: paths.build + '/loadable-stats.json'
     })
   ],
-  module: {
-    rules: [
-      // Styles: Inject CSS into the head with source maps
-      {
-        test: /\.(css)$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true,
-              importLoaders: 1,
-              modules: false
-            }
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              sourceMap: true
-            }
-          }
-        ]
-      }
-    ]
-  },
   optimization: {
     runtimeChunk: 'single', // creates a runtime file to be shared for all generated chunks.
     splitChunks: {
