@@ -13,26 +13,16 @@ const paths = require('./paths');
 module.exports = merge(common, {
   target: 'web',
   mode: 'development',
+  name: 'client',
   entry: { client: ['webpack-hot-middleware/client?reload=true&noInfo=true', paths.src + '/index.tsx'] },
   output: {
-    path: paths.buildClient,
+    path: paths.build,
     filename: '[name].js',
     chunkFilename: '[name].js',
-    // Point sourcemap entries to original disk location (format as URL on Windows)
-    devtoolModuleFilenameTemplate: (info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
-    assetModuleFilename: 'assets/[hash][ext][query]',
-    publicPath: '/client/'
+    publicPath: '/'
   },
   devtool: 'inline-source-map',
-  devServer: {
-    contentBase: './dist',
-    historyApiFallback: true,
-    open: true,
-    hot: true,
-    compress: true
-  },
   plugins: [
-    new HotModuleReplacementPlugin(),
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -45,6 +35,7 @@ module.exports = merge(common, {
         }
       ]
     }),
+    new HotModuleReplacementPlugin(),
     new ForkTsCheckerWebpackPlugin({
       async: false
     }),

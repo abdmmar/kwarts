@@ -1,0 +1,6 @@
+{
+  "watch": ["server"],
+  "ext": ".tsx,.ts,.js",
+  "ignore": [],
+  "exec": "npx ts-node ./server/server-dev.ts"
+}

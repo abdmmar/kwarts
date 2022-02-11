@@ -1,9 +1,3 @@
-const htmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const ESLintPlugin = require('eslint-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
-
 const paths = require('./paths');
 
 module.exports = {
@@ -36,8 +30,7 @@ module.exports = {
     modules: [paths.src, 'node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
     alias: {
-      '@': paths.src,
-      assets: paths.public
+      '@': paths.src
     }
   }
 };

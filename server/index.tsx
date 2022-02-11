@@ -1,44 +1,71 @@
+import path from 'path';
 import * as express from 'express';
-import * as webpack from 'webpack';
-import WebpackDevMiddleware from 'webpack-dev-middleware';
-import WebpackHotMiddleware from 'webpack-hot-middleware';
+import * as React from 'react';
+import { renderToString } from 'react-dom/server';
+import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
+import { ServerStyleSheet } from 'styled-components';
 
-import renderer from './renderer';
+import App from '../src/App';
 
-const app = express();
+const router = express.Router();
 
-app.use(express.static('dist'));
+type Data = {
+  styles: string;
+  children: string;
+  extractor: ChunkExtractor;
+};
 
-if (process.env.NODE_ENV === 'development') {
-  console.log('[SERVER] Installing development environment');
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const webpackConfig: webpack.Configuration = require('../config/webpack.dev.client.js');
-  const compiler = webpack(webpackConfig);
+const html = ({ styles, children, extractor }: Data) => {
+  return `
+  <html lang="en">
+    <head>
+      <base href="/" />
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>KWARTS</title>
+      ${styles}
+      ${extractor.getStyleTags()}
+    </head>
+    <body>
+      <div id="root">${children}</div>
+      ${extractor.getScriptTags()}
+    </body>
+  </html>`;
+};
 
-  process.on('SIGINT', () => {
-    console.log('[SERVER] Cleaning sensors..');
-    process.exit();
+export const renderer = async (req: express.Request, res: express.Response) => {
+  const stylesheet = new ServerStyleSheet();
+  const loadableJSON = path.resolve(__dirname, './loadable-stats.json');
+
+  const extractor = new ChunkExtractor({
+    statsFile: loadableJSON,
+    entrypoints: ['.']
   });
 
-  app.use(
-    WebpackDevMiddleware(compiler, {
-      serverSideRender: true,
-      publicPath: webpackConfig.output.publicPath,
-      headers: { 'Access-Control-Allow-Origin': '*' },
-      stats: 'minimal'
-    })
+  const content = renderToString(
+    stylesheet.collectStyles(
+      <ChunkExtractorManager extractor={extractor}>
+        <App />
+      </ChunkExtractorManager>
+    )
   );
-  app.use(WebpackHotMiddleware(compiler));
-}
 
-app.get('*', (req: express.Request, res: express.Response) => {
-  try {
-    res.send(renderer(req));
-  } catch (error) {
-    console.error('[SERVER] Error in rendering server side:', error);
-  }
-});
+  const styles = stylesheet.getStyleTags();
 
-app.listen(3000, () => {
-  console.log('[SERVER] Server is running on http://localhost:3000');
-});
+  const data: Data = {
+    styles,
+    children: content,
+    extractor
+  };
+
+  const rendered = html(data);
+
+  console.log(rendered);
+
+  res.status(200).send(rendered);
+};
+
+export default () => {
+  router.use(renderer);
+  return router;
+};
