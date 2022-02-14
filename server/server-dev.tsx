@@ -1,7 +1,9 @@
+import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+import webpackHotServerMiddleware from 'webpack-hot-server-middleware';
 
 import clientConfig from '../config/webpack.dev.client';
 import serverConfig from '../config/webpack.dev.server';
@@ -24,13 +26,11 @@ process.on('SIGINT', () => {
 
 app.use(
   webpackDevMiddleware(compiler, {
-    serverSideRender: true,
-    writeToDisk: false, // Toggle this to get webpack in-memory files to be written to disk
-    headers: { 'Access-Control-Allow-Origin': '*' },
-    // publicPath: '../dist/client',
-    stats: 'minimal'
+    publicPath: './',
+    serverSideRender: true
   })
 );
 app.use(webpackHotMiddleware(clientCompiler));
+// app.use(webpackHotServerMiddleware(compiler));
 
-app.listen(8080, () => console.log('[SERVER] Server is running on http://localhost:3000'));
+app.listen(8080, () => console.log('[SERVER] Server is running on http://localhost:8080'));

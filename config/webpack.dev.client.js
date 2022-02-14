@@ -6,6 +6,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const common = require('./webpack.common');
 const paths = require('./paths');
@@ -14,7 +15,7 @@ module.exports = merge(common, {
   target: 'web',
   mode: 'development',
   name: 'client',
-  entry: { client: ['webpack-hot-middleware/client?reload=true&noInfo=true', paths.src + '/index.tsx'] },
+  entry: ['react-hot-loader/patch', 'webpack-hot-middleware/client?path=/__webpack_hmr', paths.src + '/index.tsx'],
   output: {
     path: paths.build,
     filename: '[name].js',
@@ -27,13 +28,19 @@ module.exports = merge(common, {
       patterns: [
         {
           from: paths.public,
-          to: 'assets',
+          to: 'public',
           globOptions: {
             ignore: ['*.DS_Store']
           },
           noErrorOnMissing: true
         }
       ]
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, '../public/index.html'),
+      filename: 'index.html',
+      inject: true,
+      scriptLoading: 'defer'
     }),
     new HotModuleReplacementPlugin(),
     new ForkTsCheckerWebpackPlugin({

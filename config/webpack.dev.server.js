@@ -9,12 +9,11 @@ module.exports = merge(common, {
   target: 'node',
   name: 'server',
   mode: 'development',
-  entry: path.resolve(__dirname, '../server/index.tsx'),
+  entry: { entry: path.resolve(__dirname, '../server/index.tsx') },
   output: {
     path: paths.build,
     libraryTarget: 'commonjs2',
-    filename: 'server.js',
-    chunkFilename: 'chunks/[name].js'
+    filename: 'server.js'
   },
   externals: [webpackNodeExternals()]
 });

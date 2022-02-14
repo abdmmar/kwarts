@@ -33,13 +33,13 @@ const html = ({ styles, children, extractor }: Data) => {
   </html>`;
 };
 
-export const renderer = async (req: express.Request, res: express.Response) => {
+export const renderer = (req: express.Request, res: express.Response) => {
   const stylesheet = new ServerStyleSheet();
   const loadableJSON = path.resolve(__dirname, './loadable-stats.json');
 
   const extractor = new ChunkExtractor({
     statsFile: loadableJSON,
-    entrypoints: ['.']
+    entrypoints: ['./']
   });
 
   const content = renderToString(
@@ -63,9 +63,12 @@ export const renderer = async (req: express.Request, res: express.Response) => {
   console.log(rendered);
 
   res.status(200).send(rendered);
+  res.end();
 };
 
-export default () => {
+const serverRenderer = () => {
   router.use(renderer);
   return router;
 };
+
+export default serverRenderer;
