@@ -1,4 +1,3 @@
-const path = require('path');
 const { merge } = require('webpack-merge');
 const webpackNodeExternals = require('webpack-node-externals');
 
@@ -10,15 +9,13 @@ module.exports = merge(common, {
   mode: 'development',
   name: 'server',
   entry: {
-    server: './server/index.tsx'
+    server: './server/renderer.tsx'
   },
   output: {
-    path: paths.build,
+    path: paths.buildServer,
     libraryTarget: 'commonjs2',
     filename: '[name].js',
-    chunkFilename: 'chunks/[name].js',
-    devtoolModuleFilenameTemplate: (info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
-    assetModuleFilename: 'assets/[hash][ext][query]'
+    publicPath: '/'
   },
   externals: [webpackNodeExternals()]
 });

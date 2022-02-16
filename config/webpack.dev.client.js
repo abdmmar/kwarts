@@ -11,25 +11,23 @@ const common = require('./webpack.common');
 const paths = require('./paths');
 
 module.exports = merge(common, {
+  name: 'client',
   target: 'web',
   mode: 'development',
-  entry: { client: ['webpack-hot-middleware/client?reload=true&noInfo=true', paths.src + '/index.tsx'] },
+  devtool: 'inline-source-map',
+  entry: {
+    client: [
+      'react-hot-loader/patch',
+      `webpack-hot-middleware/client?path=http://localhost:5002/__webpack_hmr&timeout=2000`,
+      paths.src + '/index.tsx'
+    ]
+  },
   output: {
     path: paths.buildClient,
     filename: '[name].js',
-    chunkFilename: '[name].js',
-    // Point sourcemap entries to original disk location (format as URL on Windows)
-    devtoolModuleFilenameTemplate: (info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
-    assetModuleFilename: 'assets/[hash][ext][query]',
-    publicPath: '/client/'
-  },
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: './dist',
-    historyApiFallback: true,
-    open: true,
-    hot: true,
-    compress: true
+    publicPath: '/',
+    hotUpdateMainFilename: 'updates/[fullhash].hot-update.json',
+    hotUpdateChunkFilename: 'updates/[id].[fullhash].hot-update.js'
   },
   plugins: [
     new HotModuleReplacementPlugin(),
@@ -56,7 +54,7 @@ module.exports = merge(common, {
     new LoadablePlugin({
       outputAsset: false,
       writeToDisk: true,
-      filename: paths.build + '/loadable-stats.json'
+      filename: paths.buildClient + '/loadable-stats.json'
     })
   ],
   optimization: {

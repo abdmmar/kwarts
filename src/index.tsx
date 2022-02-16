@@ -11,16 +11,10 @@ const client = new ApolloClient({
 });
 
 loadableReady(() => {
-  const renderMethod = module.hot ? ReactDOM.render : ReactDOM.hydrate;
-
-  renderMethod(
+  ReactDOM.hydrate(
     <ApolloProvider client={client}>
       <App />
     </ApolloProvider>,
     document.getElementById('root')
   );
 });
-
-if (module.hot) {
-  module.hot.accept();
-}

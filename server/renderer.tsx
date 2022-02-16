@@ -6,6 +6,17 @@ import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import { ServerStyleSheet } from 'styled-components';
 
 import App from '../src/App';
+import paths from '../config/paths';
+
+const PORT = 5001;
+
+const app = express();
+
+app.enable('trust proxy');
+
+if (process.env.NODE_ENV === 'development') {
+  app.use('/', express.static(paths.buildClient));
+}
 
 const html = ({ styles, children, extractor }) => {
   return `
@@ -25,15 +36,13 @@ const html = ({ styles, children, extractor }) => {
   </html>`;
 };
 
-export default (req: express.Request) => {
-  const stylesheet = new ServerStyleSheet();
-  const loadableJSON = path.resolve(__dirname, './loadable-stats.json');
-
+app.use((req: express.Request, res: express.Response) => {
   const extractor = new ChunkExtractor({
-    statsFile: loadableJSON,
+    statsFile: path.join(process.cwd(), 'dist', 'client', 'loadable-stats.json'),
     entrypoints: ['client']
   });
 
+  const stylesheet = new ServerStyleSheet();
   const content = renderToString(
     stylesheet.collectStyles(
       <ChunkExtractorManager extractor={extractor}>
@@ -41,7 +50,6 @@ export default (req: express.Request) => {
       </ChunkExtractorManager>
     )
   );
-
   const styles = stylesheet.getStyleTags();
 
   const data: any = {
@@ -50,5 +58,9 @@ export default (req: express.Request) => {
     extractor
   };
 
-  return html(data);
-};
+  res.status(200).send(html(data));
+});
+
+app.listen(PORT, () => {
+  console.log(`[SERVER] App SSR running on http://localhost:${PORT} 🌎`);
+});
