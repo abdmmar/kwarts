@@ -7,12 +7,6 @@ const Dotenv = require('dotenv-webpack');
 const paths = require('./paths');
 
 module.exports = {
-  entry: [paths.src + '/index.tsx'],
-  output: {
-    path: paths.build,
-    filename: '[name].bundle.js',
-    publicPath: '/'
-  },
   module: {
     rules: [
       // Transpile TypeScript
@@ -28,7 +22,7 @@ module.exports = {
       },
       // Images
       {
-        test: /\.(?:ico|png|jpg|jpeg|gif)$/i,
+        test: /\.(?:ico|png|jpg|jpeg|gif|webp)$/i,
         type: 'asset/resource'
       },
       // Fonts and SVGs
@@ -38,34 +32,6 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: paths.public,
-          to: 'assets',
-          globOptions: {
-            ignore: ['*.DS_Store']
-          },
-          noErrorOnMissing: true
-        }
-      ]
-    }),
-    new htmlWebpackPlugin({
-      title: 'Webpack Vanilla JS',
-      favicon: paths.public + '/favicon.png',
-      template: paths.public + '/index.html',
-      filename: 'index.html'
-    }),
-    new ForkTsCheckerWebpackPlugin({
-      async: false
-    }),
-    new ESLintPlugin({
-      extensions: ['js', 'jsx', 'ts', 'tsx'],
-      emitWarning: false
-    }),
-    new Dotenv()
-  ],
   resolve: {
     modules: [paths.src, 'node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
