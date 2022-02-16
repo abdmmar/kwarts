@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf ./dist",
-    "start-dev": "nodemon --ext .ts,.tsx.js --exec ts-node ./server/dev.ts",
+    "start-dev": "ts-node ./server/dev.ts",
     "dev": "cross-env NODE_ENV=development npm-run-all --parallel dev:*",
     "dev:server": "webpack --config config/webpack.dev.server.js --watch",
     "dev:client": "webpack --config  config/webpack.dev.client.js --watch --no-cache",
@@ -25,6 +25,7 @@
     "@apollo/client": "3.5.8",
     "@loadable/component": "5.15.2",
     "@loadable/server": "5.15.2",
+    "cors": "2.8.5",
     "express": "4.17.2",
     "graphql": "16.3.0",
     "nodemon": "2.0.15",

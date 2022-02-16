@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import webpack, { Compiler } from 'webpack';
 import nodemon from 'nodemon';
@@ -18,7 +19,7 @@ const app = express();
   try {
     console.log('[SERVER] Installing development environment');
 
-    sync('../dist');
+    sync(path.join(process.cwd(), 'dist'));
 
     const multiCompiler = webpack([clientConfig, serverConfig]);
     const clientCompiler = multiCompiler.compilers.find((compiler: Compiler) => compiler.name === 'client') as Compiler;
@@ -28,7 +29,8 @@ const app = express();
       devMiddleware(clientCompiler, {
         publicPath: './',
         stats: 'minimal',
-        writeToDisk: true
+        writeToDisk: true,
+        serverSideRender: true
       })
     );
 
@@ -52,7 +54,7 @@ const app = express();
     await Promise.all([compilerListener('client', clientCompiler), compilerListener('server', serverCompiler)]);
 
     app.listen(PORT, () => {
-      console.log(`[SERVER] Development server is running on http://localhost:${PORT}`);
+      console.log(`[SERVER] Hot dev server middleware is running on port: ${PORT}`);
     });
 
     const script = nodemon({

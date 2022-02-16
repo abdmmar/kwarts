@@ -18,7 +18,7 @@ module.exports = merge(common, {
   entry: {
     client: [
       'react-hot-loader/patch',
-      `webpack-hot-middleware/client?path=http://localhost:5002/__webpack_hmr&timeout=2000`,
+      `webpack-hot-middleware/client?path=http://localhost:5002/__webpack_hmr&timeout=2000&reload=true`,
       paths.src + '/index.tsx'
     ]
   },
@@ -43,9 +43,7 @@ module.exports = merge(common, {
         }
       ]
     }),
-    new ForkTsCheckerWebpackPlugin({
-      async: false
-    }),
+    new ForkTsCheckerWebpackPlugin(),
     new ESLintPlugin({
       extensions: ['js', 'jsx', 'ts', 'tsx'],
       emitWarning: false
